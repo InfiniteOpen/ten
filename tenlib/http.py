@@ -319,14 +319,14 @@ class Session(requests.Session):
 
     # Burp
 
-    def burp(self) -> None:
+    def burp(self,port=8080) -> None:
         """Sets Burp as the proxy for every request, and sets `verify` to
         `False`. To reset, use `Session.unburp`.
         """
         if self._burp_saved_state:
             return
         self._burp_saved_state = {"proxies": self.proxies, "verify": self.verify}
-        self.proxies = config.burp_proxy
+        self.proxies = config.burp_proxy if port == 8080 else f"http://127.0.0.1:{port}"
         self.verify = False
 
     def unburp(self) -> None:
